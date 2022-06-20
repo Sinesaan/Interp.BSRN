@@ -1,0 +1,33 @@
+/*Gruppenmitglieder
+  Ariana Rashid
+  Donika Osmani
+  Ela Küpelikilinc
+  Mehmet Kahveci
+  Sinesaan Sivakumar
+
+*/
+Entwickeln und implementieren Sie ein Echtzeitsystem, das aus vier Prozessen besteht:
+
+1. Conv. Dieser Prozess liest Messwerte von A/D-Konvertern (Analog/Digital)
+ein. Er prüft die Messwerte auf Plausibilität und konvertiert sie gegebenenfalls. Da keine physischen A/D-Konverter vorliegen, soll Conv Zufallszahlen
+erzeugen.
+
+2. Log. Dieser Prozess liest die Messwerte von Conv aus und schreibt sie in eine
+lokale Datei.
+
+3. Stat. Dieser Prozess liest die Messwerte von Conv aus und berechnet statistische Daten (Mittelwert und Summe).
+
+4. Report. Dieser Prozess greift auf die Ergebnisse von Stat zu und gibt die
+statistischen Daten in der Shell aus.
+
+
+Beachten Sie bei der Implementierung folgende Synchronisationsbedingungen:
+• Conv muss erst Messwerte schreiben, bevor Log und Stat diese auslesen
+können.
+• Stat muss erst Statistikdaten schreiben, bevor Report diese auslesen kann.
+Entwickeln und implementieren Sie das geforderte System mit den entsprechenden
+Systemaufrufen oder (Standard-)Bibliotheksfunktionen und realisieren Sie den Datenaustausch zwischen den vier Prozessen einmal mit Pipes, Message Queues,
+Shared Memory mit Semaphore und mit Sockets.
+Als gefordertes Ergebnis müssen vier Implementierungsvarianten des Programms existieren, bei denen der Datenaustausch zwischen den vier Prozessen
+einmal mit Pipes, Message Queues, Shared Memory mit Semaphore und
+via Sockets funktioniert.
