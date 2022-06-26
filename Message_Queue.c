@@ -224,4 +224,59 @@ int main(int argc, char **argv)
 
     exit(1);
   }
+ //---------------------------------Childprozess von log -------------------------------------------->
 
+  int log = fork();
+  if (log == 0)
+  {
+    // receivebuffer.mtype = 1;
+
+    rc_msgrcv2 = msgrcv(rc_msgget2,
+                        &receivebuffer,
+                        sizeof(receivebuffer.mtext),
+                        receivebuffer.mtype,
+                        MSG_NOERROR | IPC_NOWAIT);
+    if (rc_msgrcv < 0)
+    {
+      printf("Lesen der Nachricht fehlgeschlagen.\n");
+      perror("msgrcv");
+      exit(1);
+    }
+    else
+    {
+
+      //<-------------------------------------------------------------------------------------------
+      //--------------------------Die Zahlen in eine Datei schreiben------------------------------->
+      FILE *fp;
+      fp = fopen("Zufällige_Zahlen_MQ.txt", "w"); // Datei namens Zufällige_Zahlen_MQ.txt wird geöffnet
+      if (fp == NULL)
+      {
+        printf("Die Datei konnte nicht gefunden werden. \n");
+      }
+      else
+      {
+        // array Liste schreiben
+        for (int i = 0; i < 10; i++)
+        {
+          fprintf(fp, " %d: %d\n", i + 1, receivebuffer.mtext[i]);
+        }
+      }
+      fclose(fp);
+      //printf("Die Zufälligen Zahlen wurden in der Datei Zufällige_Zahlen_MQ.txt geschrieben.\n");
+
+      // Nachrichtenwarteschlange löschen
+      rc_msgctl2 = msgctl(rc_msgget2, IPC_RMID, 0);
+      if (rc_msgctl2 < 0)
+      {
+        printf("Die Warteschlange konnte nicht gelöscht werden.\n");
+        perror("msgctl");
+
+        exit(1);
+      }
+      else
+      {
+        printf("Nachrichtenwarteschlange %i mit ID %i wurde gelöscht.\n\n", mq_key2, rc_msgget2);
+      }
+      exit(0);
+    }
+  }
