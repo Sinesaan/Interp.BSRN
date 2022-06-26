@@ -280,3 +280,41 @@ int main(int argc, char **argv)
       exit(0);
     }
   }
+//------------------------------Report Childprozess----------------------------------------------->
+
+  int report = fork();
+  if (report == 0)
+  {
+// Mittelwert herauslesen--------------
+    rc_msgrcv3 = msgrcv(rc_msgget3,
+                        &sendbuffer,
+                        sizeof(sendbuffer.mtext),
+                        sendbuffer.mtype,
+                        MSG_NOERROR | IPC_NOWAIT);
+    if (rc_msgrcv < 0)
+    {
+      printf("Lesen der Nachricht fehlgeschlagen.\n");
+      perror("msgrcv");
+      exit(1);
+    }
+     printf("Die Empfangene Summe ist %d\n", sendbuffer.mtext[14]);
+     printf("Der Empfangene Mittelwert ist: %i\n\n", sendbuffer.mtext[11]);
+     
+  //-------------------------------------------------------------------------------------------------------------------
+
+    // Nachrichtenwarteschlange löschen
+    rc_msgctl3 = msgctl(rc_msgget3, IPC_RMID, 0);
+    if (rc_msgctl3 < 0)
+    {
+      printf("Die Warteschlange konnte nicht gelöscht werden.\n");
+      perror("msgctl");
+
+      exit(1);
+    }
+    else
+    {
+      printf("Nachrichtenwarteschlange %i mit ID %i wurde gelöscht.\n", mq_key3, rc_msgget3);
+    }
+  }
+  exit(0);
+}
