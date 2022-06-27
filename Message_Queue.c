@@ -236,7 +236,7 @@ int main(int argc, char **argv)
                         sizeof(receivebuffer.mtext),
                         receivebuffer.mtype,
                         MSG_NOERROR | IPC_NOWAIT);
-    if (rc_msgrcv < 0)
+    if (rc_msgrcv2 < 0)
     {
       printf("Lesen der Nachricht fehlgeschlagen.\n");
       perror("msgrcv");
@@ -291,7 +291,7 @@ int main(int argc, char **argv)
                         sizeof(sendbuffer.mtext),
                         sendbuffer.mtype,
                         MSG_NOERROR | IPC_NOWAIT);
-    if (rc_msgrcv < 0)
+    if (rc_msgrcv3 < 0)
     {
       printf("Lesen der Nachricht fehlgeschlagen.\n");
       perror("msgrcv");
